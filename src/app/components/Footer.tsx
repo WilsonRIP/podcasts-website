@@ -38,9 +38,9 @@ const Footer = memo(function Footer() {
       <footer className={`${mulish.className} py-16`}>
         <div className="container mx-auto px-6 md:px-8">
           <div className="animate-pulse">
-            <div className={`h-10 rounded w-40 mb-8 ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
-            <div className={`h-4 rounded w-full max-w-md mb-4 ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
-            <div className={`h-4 rounded w-3/4 max-w-md ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
+            <div className="h-10 rounded w-40 mb-8 bg-gray-200 dark:bg-gray-700"></div>
+            <div className="h-4 rounded w-full max-w-md mb-4 bg-gray-200 dark:bg-gray-700"></div>
+            <div className="h-4 rounded w-3/4 max-w-md bg-gray-200 dark:bg-gray-700"></div>
           </div>
         </div>
       </footer>

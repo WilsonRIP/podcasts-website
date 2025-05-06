@@ -1,21 +1,24 @@
 "use client";
-import React from 'react';
+import React, { use } from 'react';
 import Link from 'next/link';
 import { getCategoryById, getPodcastsByCategory } from '../../data/categories';
 import PodcastCard from '../../components/PodcastCard';
 import OptimizedImage from '../../components/OptimizedImage';
 import { useThemeManager } from '../../../lib/hooks/useThemeManager';
 
+interface ResolvedCategoryPageProps {
+  id: string;
+}
+
 interface CategoryPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<ResolvedCategoryPageProps>;
 }
 
 export default function CategoryPage({ params }: CategoryPageProps) {
+  const { id } = use(params);
   const { isDark, mounted } = useThemeManager();
-  const category = getCategoryById(params.id);
-  const podcasts = getPodcastsByCategory(params.id);
+  const category = getCategoryById(id);
+  const podcasts = getPodcastsByCategory(id);
   
   if (!mounted) {
     return (
@@ -79,14 +82,14 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       </div>
       
       {/* Breadcrumbs */}
-      <div className="bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800">
+      <div className={`border-b ${isDark ? 'bg-gray-950 border-gray-800' : 'bg-white border-gray-200'}`}>
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+          <div className={`flex items-center text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
             <Link href="/" className="hover:text-primary transition-colors">Home</Link>
             <span className="mx-2">/</span>
             <Link href="/categories" className="hover:text-primary transition-colors">Categories</Link>
             <span className="mx-2">/</span>
-            <span className="text-gray-900 dark:text-white font-medium">{category.name}</span>
+            <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{category.name}</span>
           </div>
         </div>
       </div>

@@ -1,21 +1,24 @@
 "use client";
 
-import React from 'react';
+import React, { use } from 'react';
 import Link from 'next/link';
 import { getPodcastById, getCategoryById } from '../../data/categories';
 import OptimizedImage from '../../components/OptimizedImage';
 import { useThemeManager } from '../../../lib/hooks/useThemeManager';
 import { motion, LazyMotion, domAnimation } from 'framer-motion';
 
+interface ResolvedPodcastPageProps {
+  id: string;
+}
+
 interface PodcastPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<ResolvedPodcastPageProps>;
 }
 
 export default function PodcastPage({ params }: PodcastPageProps) {
+  const { id } = use(params);
   const { isDark, mounted } = useThemeManager();
-  const podcast = getPodcastById(params.id);
+  const podcast = getPodcastById(id);
   
   if (!mounted) {
     return (

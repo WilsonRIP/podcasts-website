@@ -18,12 +18,13 @@ const PodcastCard: React.FC<PodcastCardProps> = ({ podcast, variant = 'default',
   
   // Prevent hydration mismatch
   if (!mounted) {
+    // Use neutral placeholder styling that doesn't depend on isDark
     return (
-      <div className={`animate-pulse rounded-lg ${isDark ? 'bg-gray-800' : 'bg-gray-100'}`}>
-        <div className={`aspect-square ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
+      <div className="animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800">
+        <div className="aspect-square bg-gray-300 dark:bg-gray-700"></div>
         <div className="p-4 space-y-2">
-          <div className={`h-4 rounded w-3/4 ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
-          <div className={`h-3 rounded w-1/2 ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
+          <div className="h-4 rounded w-3/4 bg-gray-300 dark:bg-gray-700"></div>
+          <div className="h-3 rounded w-1/2 bg-gray-300 dark:bg-gray-700"></div>
         </div>
       </div>
     );
@@ -31,7 +32,7 @@ const PodcastCard: React.FC<PodcastCardProps> = ({ podcast, variant = 'default',
   if (variant === 'compact') {
     return (
       <Link href={`/podcasts/${podcast.id}`} className="group">
-        <div className={`flex items-center gap-4 p-3 rounded-lg transition-all duration-300 ${isDark ? 'bg-gray-900 hover:bg-gray-800 shadow-md shadow-gray-900/30' : 'bg-white hover:bg-gray-100 shadow-md shadow-gray-200/50'} hover:transform hover:scale-[1.02]`}>
+        <div className={`flex items-center gap-4 p-3 rounded-lg transition-all duration-300 ${isDark ? 'bg-gray-900 hover:bg-gray-800 shadow-md hover:shadow-lg shadow-gray-900/30' : 'bg-white hover:bg-gray-100 shadow-md hover:shadow-lg shadow-gray-200/50'} hover:transform hover:scale-[1.02]`}>
           <div className="relative shrink-0 w-16 h-16 rounded-md overflow-hidden">
             <OptimizedImage
               src={podcast.coverImage}
@@ -58,7 +59,7 @@ const PodcastCard: React.FC<PodcastCardProps> = ({ podcast, variant = 'default',
       <Link href={`/podcasts/${podcast.id}`} className="group">
         <div className={cn(
             "rounded-xl overflow-hidden h-full transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1",
-            isDark ? "bg-gray-900 shadow-lg shadow-gray-900/40" : "bg-white shadow-md shadow-gray-300/50",
+            isDark ? "bg-gray-900 shadow-lg hover:shadow-xl shadow-gray-900/40" : "bg-white shadow-md hover:shadow-xl shadow-gray-300/50",
             className
           )}
         >
@@ -111,7 +112,7 @@ const PodcastCard: React.FC<PodcastCardProps> = ({ podcast, variant = 'default',
   // Default card
   return (
     <Link href={`/podcasts/${podcast.id}`} className="group">
-      <div className={`rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 ${isDark ? 'bg-gray-900 shadow-md shadow-gray-900/40' : 'bg-white shadow-md shadow-gray-200/50'}`}>
+      <div className={`rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 ${isDark ? 'bg-gray-900 shadow-md hover:shadow-xl shadow-gray-900/40' : 'bg-white shadow-md hover:shadow-xl shadow-gray-200/50'}`}>
         <div className="relative aspect-square">
           <OptimizedImage
             src={podcast.coverImage}
