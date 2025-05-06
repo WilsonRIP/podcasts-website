@@ -38,9 +38,9 @@ const Footer = memo(function Footer() {
       <footer className={`${mulish.className} py-16`}>
         <div className="container mx-auto px-6 md:px-8">
           <div className="animate-pulse">
-            <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-40 mb-8"></div>
-            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full max-w-md mb-4"></div>
-            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 max-w-md"></div>
+            <div className={`h-10 rounded w-40 mb-8 ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
+            <div className={`h-4 rounded w-full max-w-md mb-4 ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
+            <div className={`h-4 rounded w-3/4 max-w-md ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
           </div>
         </div>
       </footer>
@@ -59,7 +59,7 @@ const Footer = memo(function Footer() {
               transition={{ duration: 0.5 }}
               className="md:col-span-1"
             >
-              <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/70 mb-4">
+              <h2 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {WEBSITE_NAME}
               </h2>
               <p className={`text-sm max-w-md transition-colors duration-300 ${isDark ? 'text-gray-400' : 'text-gray-600'} mb-6`}>
@@ -104,7 +104,7 @@ const Footer = memo(function Footer() {
                 transition={{ duration: 0.5, delay: 0.1 * (index + 1) }}
                 className="space-y-4"
               >
-                <h3 className="font-bold text-lg">{group.title}</h3>
+                <h3 className={`font-bold text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>{group.title}</h3>
                 <ul className="space-y-2">
                   {group.links.map((link) => (
                     <li key={link.url}>
@@ -112,7 +112,7 @@ const Footer = memo(function Footer() {
                         href={link.url}
                         className={`text-sm transition-colors duration-200 ${
                           isDark 
-                            ? 'text-gray-400 hover:text-primary' 
+                            ? 'text-gray-300 hover:text-primary' 
                             : 'text-gray-600 hover:text-primary'
                         }`}
                       >
@@ -131,8 +131,8 @@ const Footer = memo(function Footer() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="space-y-4 md:col-span-1"
             >
-              <h3 className="font-bold text-lg">Get Podcast Recommendations</h3>
-              <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+              <h3 className={`font-bold text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>Get Podcast Recommendations</h3>
+              <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 Subscribe to our newsletter and discover new podcasts
               </p>
               <form onSubmit={handleSubmit} className="mt-4">
@@ -143,15 +143,15 @@ const Footer = memo(function Footer() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className={`flex-1 px-4 py-2 rounded-md text-gray-900 ${
+                    className={`flex-1 px-4 py-2 rounded-md ${
                       isDark 
-                        ? 'bg-gray-800 border-gray-700 focus:border-primary' 
-                        : 'bg-gray-100 border-gray-200 focus:border-primary'
-                    } border focus:ring-1 focus:ring-primary`}
+                        ? 'bg-gray-800 border-gray-700 text-white placeholder:text-gray-400 focus:border-primary' 
+                        : 'bg-gray-100 border-gray-200 text-gray-900 placeholder:text-gray-500 focus:border-primary'
+                    } border focus:ring-1 focus:ring-primary transition-colors`}
                   />
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+                    className="px-4 py-2 bg-primary text-white font-medium rounded-md hover:bg-primary/90 transition-colors focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:outline-none"
                   >
                     Subscribe
                   </button>
@@ -167,7 +167,7 @@ const Footer = memo(function Footer() {
             transition={{ duration: 0.5, delay: 0.6 }}
             className={`mt-12 pt-6 border-t text-center text-sm transition-colors duration-300 ${
               isDark 
-                ? 'border-gray-800 text-gray-500' 
+                ? 'border-gray-800 text-gray-400' 
                 : 'border-gray-200 text-gray-500'
             }`}
           >

@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { ThemeProvider } from './components/theme-provider';
 import './styles/global.css';
+import { useThemeManager } from '../lib/hooks/useThemeManager';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -31,12 +32,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
       }
     }
   }, []);
+  const { isDark } = useThemeManager();
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
         {/* Add ColorSchemeScript to prevent flash of wrong theme */}
       </head>
-      <body className="flex min-h-screen flex-col bg-gray-50 text-gray-900 antialiased dark:bg-gray-900 dark:text-gray-100">
+      <body className={`flex min-h-screen w-full flex-col antialiased ${isDark ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -46,7 +48,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           {/* Skip‑link for keyboard users & screen readers */}
           <a
             href="#content"
-            className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 rounded bg-primary px-3 py-2 text-white"
+            className={`sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 rounded px-3 py-2 ${isDark ? 'bg-primary text-white' : 'bg-primary text-white'}`}
           >
             Skip to content
           </a>

@@ -1,7 +1,11 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
 import { getPodcastById, getCategoryById } from '../../data/categories';
 import OptimizedImage from '../../components/OptimizedImage';
+import { useThemeManager } from '../../../lib/hooks/useThemeManager';
+import { motion, LazyMotion, domAnimation } from 'framer-motion';
 
 interface PodcastPageProps {
   params: {
@@ -10,21 +14,37 @@ interface PodcastPageProps {
 }
 
 export default function PodcastPage({ params }: PodcastPageProps) {
+  const { isDark, mounted } = useThemeManager();
   const podcast = getPodcastById(params.id);
+  
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-300 dark:bg-gray-700 rounded w-64 mb-4"></div>
+          <div className="h-32 bg-gray-200 dark:bg-gray-800 rounded-lg w-full max-w-3xl"></div>
+        </div>
+      </div>
+    );
+  }
   
   if (!podcast) {
     return (
-      <div className="container mx-auto px-4 py-24 text-center">
-        <h1 className="text-3xl font-bold mb-4">Podcast Not Found</h1>
-        <p className="text-gray-600 dark:text-gray-400 mb-8">
-          The podcast you're looking for doesn't exist or has been removed.
-        </p>
-        <Link
-          href="/explore"
-          className="rounded-md bg-primary px-6 py-3 text-white hover:bg-primary/90 transition-colors"
-        >
-          Explore Podcasts
-        </Link>
+      <div className={`min-h-screen w-full ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+        <div className="container mx-auto px-4 py-24 text-center">
+          <h1 className={`text-3xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Podcast Not Found</h1>
+          <p className={`mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            The podcast you're looking for doesn't exist or has been removed.
+          </p>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link
+              href="/explore"
+              className={`rounded-md bg-primary px-6 py-3 text-white hover:bg-primary/90 transition-all shadow-md ${isDark ? 'shadow-gray-900/30' : 'shadow-gray-300/30'} hover:shadow-lg`}
+            >
+              Explore Podcasts
+            </Link>
+          </motion.div>
+        </div>
       </div>
     );
   }
@@ -33,36 +53,59 @@ export default function PodcastPage({ params }: PodcastPageProps) {
   const categories = podcast.categories.map(categoryId => getCategoryById(categoryId)).filter(Boolean);
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <LazyMotion features={domAnimation}>
+      <div className={`min-h-screen w-full ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+        <div className="container mx-auto px-4 py-12">
       {/* Breadcrumbs */}
-      <div className="mb-6">
-        <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="mb-6"
+      >
+        <div className={`flex items-center text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
           <Link href="/" className="hover:text-primary transition-colors">Home</Link>
           <span className="mx-2">/</span>
           <Link href="/explore" className="hover:text-primary transition-colors">Explore</Link>
           <span className="mx-2">/</span>
-          <span className="text-gray-900 dark:text-white font-medium">{podcast.title}</span>
+          <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{podcast.title}</span>
         </div>
-      </div>
+      </motion.div>
       
       {/* Podcast header */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-        <div className="md:col-span-1">
-          <div className="aspect-square relative rounded-lg overflow-hidden shadow-md">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <motion.div 
+          className="md:col-span-1"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <motion.div 
+            whileHover={{ scale: 1.03 }}
+            className={`aspect-square relative rounded-lg overflow-hidden ${isDark ? 'shadow-lg shadow-gray-900/40' : 'shadow-lg shadow-gray-300/40'} transition-all duration-300`}>
             <OptimizedImage
               src={podcast.coverImage}
               alt={podcast.title}
               fill
               className="object-cover"
             />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
         
-        <div className="md:col-span-2">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">
+        <motion.div 
+          className="md:col-span-2"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <h1 className={`text-3xl md:text-4xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
             {podcast.title}
           </h1>
-          <p className="text-xl text-gray-700 dark:text-gray-300 mb-4">
+          <p className={`text-xl mb-4 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
             by {podcast.creator}
           </p>
           
@@ -90,23 +133,24 @@ export default function PodcastPage({ params }: PodcastPageProps) {
           )}
           
           {/* Description */}
-          <div className="prose prose-lg dark:prose-invert mb-8">
+          <div className={`prose prose-lg mb-8 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
             <p>{podcast.description}</p>
           </div>
           
           {/* Categories */}
           {categories.length > 0 && (
             <div className="mb-8">
-              <h3 className="text-lg font-medium mb-2">Categories</h3>
+              <h3 className={`text-lg font-medium mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Categories</h3>
               <div className="flex flex-wrap gap-2">
                 {categories.map(category => (
-                  <Link
-                    key={category?.id}
-                    href={`/categories/${category?.id}`}
-                    className="inline-block px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                  >
-                    {category?.name}
-                  </Link>
+                  <motion.div key={category?.id} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Link
+                      href={`/categories/${category?.id}`}
+                      className={`inline-block px-3 py-1 rounded-full text-sm transition-all ${isDark ? 'bg-gray-800 text-gray-200 shadow-md shadow-gray-900/20 hover:bg-gray-700' : 'bg-gray-100 text-gray-800 shadow-sm shadow-gray-200/50 hover:bg-gray-200'} hover:shadow-md`}
+                    >
+                      {category?.name}
+                    </Link>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -114,59 +158,69 @@ export default function PodcastPage({ params }: PodcastPageProps) {
           
           {/* Listen on platforms */}
           <div>
-            <h3 className="text-lg font-medium mb-3">Listen on</h3>
+            <h3 className={`text-lg font-medium mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>Listen on</h3>
             <div className="flex flex-wrap gap-3">
               {podcast.podcastUrl?.spotify && (
-                <a 
-                  href={podcast.podcastUrl.spotify} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 rounded-md bg-green-500 text-white hover:bg-green-600 transition-colors"
-                >
-                  <span>Spotify</span>
-                </a>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <a 
+                    href={podcast.podcastUrl.spotify} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 rounded-md bg-green-500 text-white hover:bg-green-600 transition-all shadow-md hover:shadow-lg"
+                  >
+                    <span>Spotify</span>
+                  </a>
+                </motion.div>
               )}
               
               {podcast.podcastUrl?.apple && (
-                <a 
-                  href={podcast.podcastUrl.apple} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 rounded-md bg-purple-500 text-white hover:bg-purple-600 transition-colors"
-                >
-                  <span>Apple Podcasts</span>
-                </a>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <a 
+                    href={podcast.podcastUrl.apple} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 rounded-md bg-purple-500 text-white hover:bg-purple-600 transition-all shadow-md hover:shadow-lg"
+                  >
+                    <span>Apple Podcasts</span>
+                  </a>
+                </motion.div>
               )}
               
               {podcast.podcastUrl?.google && (
-                <a 
-                  href={podcast.podcastUrl.google} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors"
-                >
-                  <span>Google Podcasts</span>
-                </a>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <a 
+                    href={podcast.podcastUrl.google} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-all shadow-md hover:shadow-lg"
+                  >
+                    <span>Google Podcasts</span>
+                  </a>
+                </motion.div>
               )}
               
               {podcast.websiteUrl && (
-                <a 
-                  href={podcast.websiteUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 rounded-md bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
-                >
-                  <span>Official Website</span>
-                </a>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <a 
+                    href={podcast.websiteUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all shadow-md hover:shadow-lg ${isDark ? 'bg-gray-800 text-white hover:bg-gray-700' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
+                  >
+                    <span>Official Website</span>
+                  </a>
+                </motion.div>
               )}
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
       
       {/* Similar podcasts section could go here */}
       
       {/* User reviews section could go here */}
-    </div>
+        </div>
+      </div>
+    </LazyMotion>
   );
 } 

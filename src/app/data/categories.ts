@@ -58,7 +58,7 @@ export const categories: Category[] = [
     name: "Music",
     description: "Podcasts about music production, artist interviews, and music history",
     icon: "/icons/music.svg",
-    coverImage: "/categories/music.jpg",
+    coverImage: "/categories/music.png",
     featuredPodcasts: ["switchedonpop", "songexploder", "dissect"]
   },
   {
@@ -82,7 +82,7 @@ export const categories: Category[] = [
     name: "Fitness & Health",
     description: "Podcasts about exercise, nutrition, wellness, and athletic performance",
     icon: "/icons/fitness.svg",
-    coverImage: "/categories/fitness.jpg",
+    coverImage: "/categories/fitness-health.png",
     featuredPodcasts: ["huberman-lab", "mind-pump", "rich-roll"]
   },
   {
@@ -90,7 +90,7 @@ export const categories: Category[] = [
     name: "Photography",
     description: "Podcasts about photography techniques, gear, and industry insights",
     icon: "/icons/photography.svg",
-    coverImage: "/categories/photography.jpg",
+    coverImage: "/categories/photography.png",
     featuredPodcasts: ["b-and-h", "petapixel", "candid"]
   }
 ];
@@ -108,7 +108,7 @@ export const podcasts: Podcast[] = [
     featured: true,
     rating: 4.7, // Example rating
     podcastUrl: {
-      spotify: "https://open.spotify.com/show/5l8IBkxX6pgPPfEL6AI57O", // From perplexity data
+      spotify: "https://open.spotify.com/show/08zQP2peZmM9GrcKShLZvC", // From perplexity data
       apple: "https://podcasts.apple.com/us/podcast/the-vergecast/id430333725" // From perplexity data
     }
   },
@@ -122,7 +122,7 @@ export const podcasts: Podcast[] = [
     featured: true,
     rating: 4.8, // Example rating
     podcastUrl: {
-      spotify: "https://open.spotify.com/show/5l8IBkxX6pgPPfEL6AI57O", // Needs actual Spotify URL
+      spotify: "https://open.spotify.com/show/6o81QuW22s5m2nfcXWjucc", // Needs actual Spotify URL
       apple: "https://podcasts.apple.com/us/podcast/waveform-the-mkbhd-podcast/id1474429475" // From perplexity data
     }
   },

@@ -1,8 +1,10 @@
+"use client";
 import React from 'react';
 import Link from 'next/link';
 import { getCategoryById, getPodcastsByCategory } from '../../data/categories';
 import PodcastCard from '../../components/PodcastCard';
 import OptimizedImage from '../../components/OptimizedImage';
+import { useThemeManager } from '../../../lib/hooks/useThemeManager';
 
 interface CategoryPageProps {
   params: {
@@ -11,28 +13,42 @@ interface CategoryPageProps {
 }
 
 export default function CategoryPage({ params }: CategoryPageProps) {
+  const { isDark, mounted } = useThemeManager();
   const category = getCategoryById(params.id);
   const podcasts = getPodcastsByCategory(params.id);
   
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-300 dark:bg-gray-700 rounded w-64 mb-4"></div>
+          <div className="h-32 bg-gray-200 dark:bg-gray-800 rounded-lg w-full max-w-3xl"></div>
+        </div>
+      </div>
+    );
+  }
+
   if (!category) {
     return (
-      <div className="container mx-auto px-4 py-24 text-center">
-        <h1 className="text-3xl font-bold mb-4">Category Not Found</h1>
-        <p className="text-gray-600 dark:text-gray-400 mb-8">
-          The category you're looking for doesn't exist.
-        </p>
-        <Link
-          href="/categories"
-          className="rounded-md bg-primary px-6 py-3 text-white hover:bg-primary/90 transition-colors"
-        >
-          Browse All Categories
-        </Link>
+      <div className={`min-h-screen w-full ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+        <div className="container mx-auto px-4 py-24 text-center">
+          <h1 className={`text-3xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Category Not Found</h1>
+          <p className={`mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            The category you're looking for doesn't exist.
+          </p>
+          <Link
+            href="/categories"
+            className="rounded-md bg-primary px-6 py-3 text-white hover:bg-primary/90 transition-colors"
+          >
+            Browse All Categories
+          </Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div>
+    <div className={`min-h-screen w-full ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {/* Hero header */}
       <div className="relative">
         <div className="relative aspect-[5/2] w-full overflow-hidden">
@@ -77,7 +93,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       
       {/* Podcasts grid */}
       <div className="container mx-auto px-4 py-12">
-        <h2 className="text-2xl font-bold mb-8">
+        <h2 className={`text-2xl font-bold mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
           {podcasts.length > 0 ? (
             `Podcasts in ${category.name} (${podcasts.length})`
           ) : (

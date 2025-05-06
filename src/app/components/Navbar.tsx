@@ -90,10 +90,10 @@ export default function Navbar() {
       className={cn(
         crimsonText.className,
         "sticky top-0 z-50 backdrop-blur-lg transition-all duration-300 ease-in-out",
-        isScrolled ? "py-2 shadow-md" : "py-3 shadow-sm",
+        isScrolled ? "py-2 shadow-xl" : "py-3 shadow-lg",
         isDark
-          ? "bg-gradient-to-br from-slate-900/95 via-primary/10 to-primary/5 text-white shadow-gray-700/30"
-          : "bg-gradient-to-br from-background/95 via-primary/5 to-primary/10 text-gray-800 shadow-black/10"
+          ? "bg-gray-900/95 text-white border-b border-gray-800 shadow-gray-900/50"
+          : "bg-white/95 text-gray-800 border-b border-gray-200 shadow-gray-300/20"
       )}
     >
       <div className="container mx-auto flex items-center h-10 md:h-12 px-4 md:px-6">
@@ -104,7 +104,10 @@ export default function Navbar() {
         >
           <span
             className={cn(
-              "font-bold text-transparent bg-clip-text text-primary dark:text-gray-50"
+              "font-bold text-2xl",
+              isDark 
+                ? "text-white" 
+                : "text-gray-900"
             )}
           >
             {WEBSITE_NAME}
@@ -116,7 +119,7 @@ export default function Navbar() {
           <Button
             variant="ghost"
             size="icon"
-            className="mr-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+            className={`mr-2 hover:bg-opacity-20 ${isDark ? 'text-gray-200 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-200'}`}
             onClick={() => setShowSearch(!showSearch)}
             aria-label="Toggle search"
           >
@@ -139,15 +142,19 @@ export default function Navbar() {
                         navigationMenuTriggerStyle(),
                         "font-medium whitespace-nowrap relative group transition-colors duration-200 ease-in-out",
                         isActive
-                          ? "text-primary bg-primary/10"
-                          : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:bg-primary/10"
+                          ? isDark 
+                            ? "text-gray-100 bg-primary/20" 
+                            : "text-primary bg-primary/10"
+                          : isDark
+                            ? "text-gray-200 hover:text-gray-100 hover:bg-primary/10"
+                            : "text-gray-800 hover:text-primary hover:bg-primary/10"
                       )}
                       data-state={isActive ? "active" : "inactive"}
                     >
                       {name}
                       <span
                         className={cn(
-                          "absolute left-0 -bottom-[1px] h-0.5 w-full rounded bg-blue-500",
+                          "absolute left-0 -bottom-[1px] h-0.5 w-full rounded bg-primary",
                           "transform origin-left scale-x-0 transition-transform duration-300 ease-out",
                           "group-hover:scale-x-100",
                           isActive && "scale-x-100"
@@ -174,7 +181,7 @@ export default function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="mr-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+              className={`mr-2 hover:bg-opacity-20 ${isDark ? 'text-gray-200 hover:bg-gray-600' : 'text-gray-700 hover:bg-gray-200'}`}
               onClick={() => setShowSearch(!showSearch)}
               aria-label="Toggle search"
             >
@@ -186,7 +193,7 @@ export default function Navbar() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="z-50 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                  className={`z-50 hover:bg-opacity-20 ${isDark ? 'text-gray-200 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-200'}`}
                   aria-label="Toggle Menu"
                 >
                   <Menu className="h-6 w-6" />
@@ -202,7 +209,7 @@ export default function Navbar() {
                 )}
               >
                 <SheetHeader className="pb-6">
-                  <SheetTitle className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/70">
+                  <SheetTitle className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     {WEBSITE_NAME}
                   </SheetTitle>
                 </SheetHeader>
@@ -218,8 +225,12 @@ export default function Navbar() {
                           className={cn(
                             "flex items-center gap-2 px-4 py-2 rounded-md transition-colors duration-200",
                             isActive
-                              ? "bg-primary/10 text-primary font-medium"
-                              : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                              ? isDark
+                                ? "bg-primary/20 text-gray-100 font-medium"
+                                : "bg-primary/10 text-primary font-medium"
+                              : isDark 
+                                ? "text-gray-200 hover:bg-gray-800" 
+                                : "text-gray-800 hover:bg-gray-100"
                           )}
                         >
                           {name}
@@ -241,12 +252,12 @@ export default function Navbar() {
             <input
               type="text"
               placeholder="Search for podcasts, topics, or creators..."
-              className="w-full px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
+              className={`w-full px-4 py-2 rounded-full border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors ${isDark ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-900'}`}
             />
             <Button
               variant="ghost"
               size="icon"
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-700 dark:text-gray-300"
+              className={`absolute right-2 top-1/2 -translate-y-1/2 ${isDark ? 'text-gray-200' : 'text-gray-700'}`}
               aria-label="Search"
             >
               <Search className="h-4 w-4" />
