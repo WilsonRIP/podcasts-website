@@ -33,7 +33,7 @@ export const categories: Category[] = [
     id: "technology",
     name: "Technology",
     description: "Podcasts about software, hardware, AI, and the future of tech",
-    icon: "/icons/technology.svg",
+    icon: "/icons/icons8-technology-48.png",
     coverImage: "/categories/019_Why_Is_Technology_Important_-_The_Techs_Storm.png",
     featuredPodcasts: ["syntax", "changelog", "darknetdiaries"]
   },
@@ -41,7 +41,7 @@ export const categories: Category[] = [
     id: "science",
     name: "Science",
     description: "Podcasts about discoveries, research, and scientific developments",
-    icon: "/icons/science.svg",
+    icon: "/icons/icons8-experiment-64.png",
     coverImage: "/categories/017_Faculty_of_Science_-_University_of_Johannesburg.jpg",
     featuredPodcasts: ["ologies", "radiolab", "sciencevs"]
   },
@@ -49,7 +49,7 @@ export const categories: Category[] = [
     id: "gaming",
     name: "Gaming",
     description: "Podcasts about video games, esports, game development, and gaming culture",
-    icon: "/icons/gaming.svg",
+    icon: "/icons/icons8-nintendo-gamecube-64.png",
     coverImage: "/categories/018_The_Reason_Why_Gaming_Is_Growing_As_a_Favourite_Pa.jpg",
     featuredPodcasts: ["triple-click", "spawn-on-me", "checkpoint"]
   },
@@ -65,15 +65,15 @@ export const categories: Category[] = [
     id: "art-design",
     name: "Art & Design",
     description: "Podcasts about creative processes, design thinking, and visual arts",
-    icon: "/icons/art.svg",
-    coverImage: "/categories/art-design.jpg",
+    icon: "/icons/icons8-art-48.png",
+    coverImage: "/categories/art-design.png",
     featuredPodcasts: ["designmatters", "99pi", "creative-pep-talk"]
   },
   {
     id: "cooking",
     name: "Cooking & Food",
     description: "Podcasts about culinary arts, recipes, food history, and food culture",
-    icon: "/icons/cooking.svg",
+    icon: "/icons/cooking.png",
     coverImage: "/categories/cooking.jpg",
     featuredPodcasts: ["splendid-table", "food52", "milk-street"]
   },
