@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { ThemeContextProvider } from "../../lib/contexts/ThemeContext";
 
 /**
  * ThemeProvider props extending the NextThemesProvider props
@@ -28,7 +29,9 @@ export function ThemeProvider({
       enableSystem={enableSystem}
       {...props}
     >
-      {children}
+      <ThemeContextProvider>
+        {children}
+      </ThemeContextProvider>
     </NextThemesProvider>
   );
 }

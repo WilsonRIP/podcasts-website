@@ -1,7 +1,10 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { Category } from '../data/categories';
 import OptimizedImage from './OptimizedImage';
+import { useThemeContext } from '../../lib/contexts/ThemeContext';
 
 interface CategoryCardProps {
   category: Category;
@@ -9,6 +12,19 @@ interface CategoryCardProps {
 }
 
 const CategoryCard: React.FC<CategoryCardProps> = ({ category, variant = 'default' }) => {
+  const { isDark, mounted } = useThemeContext();
+  
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <div className="animate-pulse rounded-lg bg-gray-100 dark:bg-gray-800">
+        <div className="aspect-[3/2] bg-gray-200 dark:bg-gray-700"></div>
+        <div className="p-4">
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+        </div>
+      </div>
+    );
+  }
   if (variant === 'compact') {
     return (
       <Link href={`/categories/${category.id}`} className="group">

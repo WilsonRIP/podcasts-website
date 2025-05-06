@@ -1,7 +1,10 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { Podcast } from '../data/categories';
 import OptimizedImage from './OptimizedImage';
+import { useThemeContext } from '../../lib/contexts/ThemeContext';
 
 interface PodcastCardProps {
   podcast: Podcast;
@@ -9,6 +12,20 @@ interface PodcastCardProps {
 }
 
 const PodcastCard: React.FC<PodcastCardProps> = ({ podcast, variant = 'default' }) => {
+  const { isDark, mounted } = useThemeContext();
+  
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <div className="animate-pulse rounded-lg bg-gray-100 dark:bg-gray-800">
+        <div className="aspect-square bg-gray-200 dark:bg-gray-700"></div>
+        <div className="p-4 space-y-2">
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+        </div>
+      </div>
+    );
+  }
   if (variant === 'compact') {
     return (
       <Link href={`/podcasts/${podcast.id}`} className="group">

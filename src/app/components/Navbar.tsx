@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Crimson_Text } from "next/font/google";
 import { useState, useEffect } from "react";
-import { useTheme } from "next-themes";
+import { useThemeManager } from "../../lib/hooks/useThemeManager";
 import ThemeToggle from "./ThemeToggle";
 import Image from "next/image";
 import { Button } from "../components/ui/button";
@@ -36,20 +36,13 @@ const WEBSITE_NAME = "PodFinder";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { resolvedTheme } = useTheme();
+  const { isDark, mounted } = useThemeManager();
   const [isMobile, setIsMobile] = useState(false);
   const [isCompactView, setIsCompactView] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
-  // Theme detection
-  const isDark = resolvedTheme === "dark";
-
-  // Only render component after mounting on client to avoid hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // Theme detection handled by useThemeManager
 
   // Check screen size
   useEffect(() => {
@@ -111,7 +104,7 @@ export default function Navbar() {
         >
           <span
             className={cn(
-              "font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/70"
+              "font-bold text-transparent bg-clip-text text-primary dark:text-gray-50"
             )}
           >
             {WEBSITE_NAME}
@@ -154,7 +147,7 @@ export default function Navbar() {
                       {name}
                       <span
                         className={cn(
-                          "absolute left-0 -bottom-[1px] h-0.5 w-full rounded bg-primary",
+                          "absolute left-0 -bottom-[1px] h-0.5 w-full rounded bg-blue-500",
                           "transform origin-left scale-x-0 transition-transform duration-300 ease-out",
                           "group-hover:scale-x-100",
                           isActive && "scale-x-100"

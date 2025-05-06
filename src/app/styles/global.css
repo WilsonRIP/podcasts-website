@@ -50,6 +50,9 @@
 @layer base {
   * {
     border-color: #e5e7eb; /* gray-200 */
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
   }
   
   .dark * {
@@ -60,5 +63,10 @@
     min-height: 100vh;
     color: hsl(var(--foreground));
     background-color: hsl(var(--background));
+  }
+
+  /* Disable transitions during theme change to prevent flicker */
+  .theme-transition-in-progress * {
+    transition: none !important;
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { useState, useEffect, useCallback, useMemo } from "react";
+import { useThemeManager } from "../../lib/hooks/useThemeManager";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ThemeToggleProps {
@@ -12,47 +12,7 @@ const STAR_COUNT = 5;
 const RAY_COUNT = 8;
 
 export default function ThemeToggle({ className = "" }: ThemeToggleProps) {
-  const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  // Only render toggle on client to avoid hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Make sure theme state is properly initialized
-  useEffect(() => {
-    if (mounted && resolvedTheme) {
-      // Force apply dark class if needed for consistency
-      if (resolvedTheme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    }
-  }, [mounted, resolvedTheme]);
-
-  const isDark = resolvedTheme === "dark";
-
-  const toggleTheme = useCallback(() => {
-    const newTheme = isDark ? "light" : "dark";
-    setTheme(newTheme);
-
-    // Create a custom event with theme data
-    const themeChangeEvent = new CustomEvent("theme-change", {
-      detail: { theme: newTheme },
-    });
-
-    // Dispatch the event
-    window.dispatchEvent(themeChangeEvent);
-
-    // Ensure the theme class is applied immediately for faster visual feedback
-    if (newTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDark, setTheme]);
+  const { isDark, toggleTheme, mounted } = useThemeManager();
 
   /** Generate static positions & timings for stars so they don't jump on re-render */
   const stars = useMemo(
@@ -72,6 +32,13 @@ export default function ThemeToggle({ className = "" }: ThemeToggleProps) {
     () => Array.from({ length: RAY_COUNT }, (_, i) => i * (360 / RAY_COUNT)),
     []
   );
+  
+  // Log theme state for debugging
+  useEffect(() => {
+    if (mounted) {
+      console.log('ThemeToggle - Current Theme State:', { isDark, mounted });
+    }
+  }, [isDark, mounted]);
 
   if (!mounted) {
     return (
@@ -84,7 +51,10 @@ export default function ThemeToggle({ className = "" }: ThemeToggleProps) {
 
   return (
     <motion.button
-      onClick={toggleTheme}
+      onClick={() => {
+        console.log('Main ThemeToggle - toggle clicked, current state:', { isDark });
+        toggleTheme();
+      }}
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}

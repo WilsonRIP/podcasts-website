@@ -7,7 +7,7 @@ import { footerLinkGroups } from "../data/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, LazyMotion, domAnimation } from "framer-motion";
-import { useTheme } from "next-themes";
+import { useThemeManager } from "../../lib/hooks/useThemeManager";
 
 const mulish = Mulish({
   weight: ["400", "600", "700"],
@@ -20,17 +20,9 @@ const WEBSITE_DESCRIPTION =
 
 // Memoized Footer component for better performance
 const Footer = memo(function Footer() {
-  const { resolvedTheme } = useTheme();
+  const { isDark, mounted } = useThemeManager();
   const [currentYear] = useState(new Date().getFullYear());
-  const [mounted, setMounted] = useState(false);
   const [email, setEmail] = useState("");
-  
-  // Only render component after mounting on client to avoid hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  
-  const isDark = resolvedTheme === 'dark';
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -179,7 +171,9 @@ const Footer = memo(function Footer() {
                 : 'border-gray-200 text-gray-500'
             }`}
           >
-            &copy; {currentYear} {WEBSITE_NAME}. All rights reserved.
+            <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6">
+              <span>&copy; {currentYear} {WEBSITE_NAME}. All rights reserved.</span>
+            </div>
           </motion.div>
         </div>
       </footer>

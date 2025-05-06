@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useThemeContext } from '../../lib/contexts/ThemeContext';
 
 interface AudioPlayerProps {
   audioUrl: string;
@@ -9,12 +10,26 @@ interface AudioPlayerProps {
 }
 
 export default function AudioPlayer({ audioUrl, title, minimal = false }: AudioPlayerProps) {
+  const { isDark, mounted } = useThemeContext();
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(1);
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
+  
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <div className="animate-pulse bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm">
+        <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full mb-4"></div>
+        <div className="flex justify-between">
+          <div className="h-8 w-8 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+          <div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
+        </div>
+      </div>
+    );
+  }
 
   useEffect(() => {
     const audioElement = audioRef.current;
